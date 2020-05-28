@@ -41,6 +41,12 @@
 - ML Kit 외에 다른 SDK도 자유롭게 사용 가능합니다.
 
 ### 주요 이슈 및 해결방안
+
+WorkManager를 이용해 Worker를 작동시키고 몇 분 정도 지나면 앱이 죽는다.
+~~~
+Workmanager의 Time 할당이 끝나면 Foreground Service로 넘어가게 했다.
+~~~
+
 이미지를 라벨링 하는데 중간 부분부터 진행상황이 업데이트 되지 않는다.
 ~~~
 로그를 보니 Worker가 이미 일이 끝났는데 진행상황을 업데이트(setProgressAsync) 하려고 한다고 찍혔다
