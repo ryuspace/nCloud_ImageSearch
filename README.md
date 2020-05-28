@@ -57,7 +57,7 @@
 query의 대상이 되게 한다.
 ~~~
 
-증상 : 실시간으로 사진이 라벨링 되고 있는데 앱을 종료하면 포그라운드 서비스에 의해 라벨링은 계속 되는데 
+증상 : 실시간으로 사진이 라벨링 되고 있는데 앱을 종료하면 포그라운드 서비스에 의해 라벨링은 계속 되는데,
 다시 들어가면 기존 라벨링 하는 것에 새로 다시 라벨링을 시작한다.
 ~~~
 해결 : worker를 생성할 때 Tag를 붙여줬다. 나중에 그 Tag가 있는 Worker가 Running 중인지 체크해서 작업 실행 여부를 판단했다.
@@ -74,6 +74,9 @@ query의 대상이 되게 한다.
 증상 : 라벨링 대상이 되는 사진이 한 장도 없을 때 notification이 계속 살아있다.
 ~~~
 해결 : setForegroundAsunc는 이름대로 비동기로 동작한다.
-주석을 보면 ListenableWorker가 종료되기 전에 setForegroundAsync가 완료되어야 된다는 건데, MLLabelWorker(해야 할 일의 구현)에서 새로운 사진이 없으면 setForegroundAsunc 호출 후 바로 종료될거라 'Worker 종료' -> 'setForegroundAsync 종료' 순서로 실행되면서 notification이 사라지지 않는 것으로 추측한다. 아마 계속 Foreground Service로 돌고 있는 듯 하다.
+주석을 보면 ListenableWorker가 종료되기 전에 setForegroundAsync가 완료되어야 된다는 건데, 
+MLLabelWorker(해야 할 일의 구현)에서 새로운 사진이 없으면 setForegroundAsunc 호출 후 바로 종료될거라 
+'Worker 종료' -> 'setForegroundAsync 종료' 순서로 실행되면서 notification이 사라지지 않는 것으로 추측한다. 
+아마 계속 Foreground Service로 돌고 있는 듯 하다.
 새로운 사진이 있을 때만 setForegroundAsync를 호출하여 해결하였다.
 ~~~
